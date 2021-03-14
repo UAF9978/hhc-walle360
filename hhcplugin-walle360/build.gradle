@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation "com.android.tools.build:gradle:4.0.1"
+}
+
+def artifactName = "hhcplugin-walle360"
+group "com.hhc.walle360"
+version "1.0.0"
+
+bintray {
+    user = 'hhc'
+    key = "b69c593c16ef41b55c5288aa61fcaf7dfab69307"
+    publications = ["_hhcplugin_walle360_"]
+    pkg {
+        repo = 'android'
+        name = artifactName
+        licenses = ['Apache-2.0']
+        desc = "apk walle360!"
+        vcsUrl = 'https://xxxx.git'
+        websiteUrl = ""
+        issueTrackerUrl = ""
+        version {
+            desc = 'just test'
+            released = new Date()
+            vcsTag = version
+            attributes = ['gradle-plugin': 'xxxxx']
+        }
+    }
+}
+
+publishing {
+    publications {
+        _hhcplugin_360walle_(MavenPublication) {
+            from components.java
+            artifactId artifactName
+            //artifact sourcesJar
+            //artifact docJar
+            pom.withXml {
+                def root = asNode()
+                def licensesNode = root.appendNode('licenses').appendNode('license')
+                licensesNode.appendNode('name', 'Apache License, Version 2.0')
+                licensesNode.appendNode('url', 'https://www.apache.org/licenses/LICENSE-2.0.txt')
+                licensesNode.appendNode('distribution', 'repo')
+                licensesNode.appendNode('comments', 'A business-friendly OSS license')
+            }
+        }
+    }
+}

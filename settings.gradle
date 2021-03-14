@@ -1,0 +1,2 @@
+include ':app', ':hhcplugin-walle360'
+rootProject.name = "hhc-walle360"
